@@ -132,7 +132,7 @@ export default function HomePage() {
               </button>
             </div>
 
-            <div className={cn('space-y-4', !filtersOpen && 'hidden lg:block')}>
+            <div className={cn('space-y-4', !filtersOpen && 'hidden lg:block', filtersOpen && 'max-h-[52dvh] overflow-y-auto pr-1 lg:max-h-none lg:overflow-visible lg:pr-0')}>
               <FilterGroup label="Jenis">
                 {POST_TYPES.map((t) => (
                   <Chip

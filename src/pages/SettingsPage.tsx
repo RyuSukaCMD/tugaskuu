@@ -20,6 +20,7 @@ export default function SettingsPage() {
     username: '',
     bio: '',
     avatar_url: '',
+    banner_url: '',
     school: '',
     education_level: '',
     class_level: '',
@@ -35,6 +36,7 @@ export default function SettingsPage() {
         username: profile.username || '',
         bio: profile.bio || '',
         avatar_url: profile.avatar_url || '',
+        banner_url: profile.banner_url || '',
         school: profile.school || '',
         education_level: profile.education_level || '',
         class_level: profile.class_level || '',
@@ -126,6 +128,12 @@ export default function SettingsPage() {
             <p className="mt-1 text-xs text-zinc-400">Bisa diganti dari foto Google default.</p>
           </div>
         </div>
+
+        <label className="block space-y-1.5">
+          <span className="text-sm font-medium">URL banner profil</span>
+          <input className="field-input" type="url" value={form.banner_url} placeholder="https://..." onChange={(e) => setForm((f) => ({ ...f, banner_url: e.target.value }))} />
+          <span className="text-xs text-zinc-400">Gunakan URL gambar landscape untuk banner profil.</span>
+        </label>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="space-y-1.5">

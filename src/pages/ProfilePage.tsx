@@ -66,7 +66,10 @@ export default function ProfilePage() {
   return (
     <div className="space-y-8">
       <section className="overflow-hidden rounded-3xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900/70">
-        <div className="h-28 bg-gradient-to-r from-violet-600 via-blue-600 to-zinc-800" />
+        <div
+          className="h-28 bg-gradient-to-r from-violet-600 via-blue-600 to-zinc-800 bg-cover bg-center"
+          style={profile.banner_url ? { backgroundImage: `linear-gradient(rgba(37, 99, 235, .22), rgba(37, 99, 235, .22)), url(${profile.banner_url})` } : undefined}
+        />
         <div className="px-5 pb-6 sm:px-8">
           <div className="-mt-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-end gap-4">

@@ -238,6 +238,7 @@ export default async function handler(req, res) {
       }
       if (body.bio !== undefined) updates.bio = sanitizeText(body.bio).slice(0, 500);
       if (body.avatar_url !== undefined) updates.avatar_url = sanitizeText(body.avatar_url).slice(0, 1000) || null;
+      if (body.banner_url !== undefined) updates.banner_url = sanitizeText(body.banner_url).slice(0, 1000) || null;
       if (body.school !== undefined) updates.school = sanitizeText(body.school).slice(0, 120) || null;
       if (body.education_level !== undefined) updates.education_level = sanitizeText(body.education_level).slice(0, 40) || null;
       if (body.class_level !== undefined) updates.class_level = sanitizeText(body.class_level).slice(0, 40) || null;

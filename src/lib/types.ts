@@ -7,6 +7,7 @@ export interface Profile {
   nickname: string;
   bio: string | null;
   avatar_url: string | null;
+  banner_url?: string | null;
   school: string | null;
   education_level: string | null;
   class_level: string | null;
