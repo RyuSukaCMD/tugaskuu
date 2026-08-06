@@ -44,7 +44,7 @@ export default async function handler(req, res) {
       const from = (pageNum - 1) * limitNum;
       const to = from + limitNum - 1;
 
-      let query = supabase.from('posts').select('*', { count: 'exact' });
+      let query = supabase.from('posts').select('*', { count: 'exact' }).eq('is_removed', false);
 
       if (type && type !== 'all') query = query.eq('type', type);
       if (subject) query = query.eq('subject', subject);

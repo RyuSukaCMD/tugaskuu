@@ -16,6 +16,57 @@ export default async function handler(req, res) {
   cors(res);
 
   try {
+    if (req.query.resource === 'moderation' && req.method === 'GET') {
+      const auth = await requireOwner(req, res);
+      if (!auth) return;
+      const [{ data: reports, error }, { data: reportPosts }, { data: reportUsers }, usersCount, postsCount, openCount, removedCount] = await Promise.all([
+        supabase.from('reports').select('*').order('created_at', { ascending: false }).limit(200),
+        supabase.from('posts').select('id, title, slug, user_id, is_removed'),
+        supabase.from('profiles').select('id, nickname, username'),
+        supabase.from('profiles').select('*', { count: 'exact', head: true }),
+        supabase.from('posts').select('*', { count: 'exact', head: true }).eq('is_removed', false),
+        supabase.from('reports').select('*', { count: 'exact', head: true }).eq('status', 'open'),
+        supabase.from('posts').select('*', { count: 'exact', head: true }).eq('is_removed', true),
+      ]);
+      if (error) throw error;
+      const postMap = new Map((reportPosts || []).map((post) => [post.id, post]));
+      const userMap = new Map((reportUsers || []).map((user) => [user.id, user]));
+      return res.status(200).json({
+        stats: { users: usersCount.count || 0, posts: postsCount.count || 0, reports: (reports || []).length, openReports: openCount.count || 0, removedPosts: removedCount.count || 0 },
+        reports: (reports || []).map((report) => ({ ...report, post: postMap.get(report.post_id) || null, reporter: userMap.get(report.user_id) || null })),
+      });
+    }
+
+    if (req.query.resource === 'moderation' && req.method === 'PATCH') {
+      const auth = await requireOwner(req, res);
+      if (!auth) return;
+      const id = Number(req.body?.id);
+      const action = req.body?.action;
+      if (!id || !['takedown', 'dismiss'].includes(action)) return res.status(400).json({ error: 'Aksi tidak valid' });
+      const { data: report } = await supabase.from('reports').select('*').eq('id', id).maybeSingle();
+      if (!report) return res.status(404).json({ error: 'Report tidak ditemukan' });
+      if (action === 'takedown') await supabase.from('posts').update({ is_removed: true }).eq('id', report.post_id);
+      const { error } = await supabase.from('reports').update({ status: action === 'takedown' ? 'actioned' : 'dismissed', reviewed_by: auth.user.id, reviewed_at: new Date().toISOString() }).eq('id', id);
+      if (error) throw error;
+      return res.status(200).json({ ok: true });
+    }
+
+    if (req.query.resource === 'report' && req.method === 'POST') {
+      const auth = await requireUser(req, res);
+      if (!auth) return;
+      if (!rateLimit(`report:${auth.user.id}`, 10, 3600000)) return res.status(429).json({ error: 'Terlalu banyak laporan. Coba lagi nanti.' });
+      const postId = Number(req.body?.post_id);
+      const reason = ['spam', 'harassment', 'misinformation', 'copyright', 'other'].includes(req.body?.reason) ? req.body.reason : 'other';
+      const details = sanitizeText(req.body?.details || '').slice(0, 1000) || null;
+      const { data: post } = await supabase.from('posts').select('id, user_id, is_removed').eq('id', postId).maybeSingle();
+      if (!post || post.is_removed) return res.status(404).json({ error: 'Postingan tidak ditemukan' });
+      if (post.user_id === auth.user.id) return res.status(400).json({ error: 'Kamu tidak dapat melaporkan postingan sendiri' });
+      const { data, error } = await supabase.from('reports').insert({ post_id: postId, user_id: auth.user.id, reason, details }).select().single();
+      if (error?.code === '23505') return res.status(400).json({ error: 'Kamu sudah melaporkan postingan ini' });
+      if (error) throw error;
+      return res.status(201).json(data);
+    }
+
     if (req.query.resource === 'feedback' && req.method === 'GET') {
       const auth = await requireOwner(req, res);
       if (!auth) return;

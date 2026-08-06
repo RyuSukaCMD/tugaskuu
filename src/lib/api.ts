@@ -3,7 +3,9 @@ import type {
   Comment,
   Feedback,
   Notification,
+  ModerationData,
   Post,
+  Report,
   Profile,
   ProfileStats,
   QuestionAnswer,
@@ -51,6 +53,15 @@ export const api = {
 
   getFeedback: (token: string) =>
     fetch('/api/profile?resource=feedback', { headers: authHeaders(token) }).then((r) => handle<Feedback[]>(r)),
+
+  createReport: (token: string, body: { post_id: number; reason: Report['reason']; details?: string }) =>
+    fetch('/api/profile?resource=report', { method: 'POST', headers: authHeaders(token), body: JSON.stringify(body) }).then((r) => handle<Report>(r)),
+
+  getModeration: (token: string) =>
+    fetch('/api/profile?resource=moderation', { headers: authHeaders(token) }).then((r) => handle<ModerationData>(r)),
+
+  reviewReport: (token: string, id: number, action: 'takedown' | 'dismiss') =>
+    fetch('/api/profile?resource=moderation', { method: 'PATCH', headers: authHeaders(token), body: JSON.stringify({ id, action }) }).then((r) => handle<{ ok: true }>(r)),
 
   getFeed: (params: Record<string, string | number | undefined>, token?: string | null) => {
     const q = new URLSearchParams();

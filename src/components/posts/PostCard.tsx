@@ -10,6 +10,7 @@ import type { Post } from '../../lib/types';
 import { cn, timeAgo } from '../../lib/utils';
 import Avatar from '../ui/Avatar';
 import Badge from '../ui/Badge';
+import ReportPostButton from './ReportPostButton';
 
 export default function PostCard({ post }: { post: Post }) {
   const excerpt =
@@ -85,9 +86,10 @@ export default function PostCard({ post }: { post: Post }) {
             <NotebookPen className="h-3.5 w-3.5" /> {post.answer_count || 0} jawaban
           </span>
         )}
-        <span className="inline-flex items-center gap-1 ml-auto">
+        <span className="inline-flex items-center gap-1">
           <Bookmark className="h-3.5 w-3.5" /> {post.bookmark_count || 0}
         </span>
+        <ReportPostButton postId={post.id} />
       </div>
     </article>
   );

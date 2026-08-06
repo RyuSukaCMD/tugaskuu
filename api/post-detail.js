@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
     const { data, error } = await query.maybeSingle();
     if (error) throw error;
-    if (!data) return res.status(404).json({ error: 'Post tidak ditemukan' });
+    if (!data || data.is_removed) return res.status(404).json({ error: 'Post tidak ditemukan' });
 
     await supabase
       .from('posts')

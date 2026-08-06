@@ -44,6 +44,7 @@ export interface Post {
   bookmark_count: number;
   answer_count: number;
   view_count: number;
+  is_removed?: boolean;
   created_at: string;
   updated_at: string;
   author?: Profile;
@@ -91,6 +92,23 @@ export interface Notification {
   is_read: boolean;
   created_at: string;
   actor?: Profile | null;
+}
+
+export interface Report {
+  id: number;
+  post_id: number;
+  user_id: string;
+  reason: 'spam' | 'harassment' | 'misinformation' | 'copyright' | 'other';
+  details: string | null;
+  status: 'open' | 'dismissed' | 'actioned';
+  created_at: string;
+  post?: Pick<Post, 'id' | 'title' | 'slug' | 'is_removed'>;
+  reporter?: Pick<Profile, 'nickname' | 'username'>;
+}
+
+export interface ModerationData {
+  stats: { users: number; posts: number; reports: number; openReports: number; removedPosts: number };
+  reports: Report[];
 }
 
 export interface Feedback {
