@@ -20,6 +20,7 @@ import { api } from '../../lib/api';
 import { cn, timeAgo } from '../../lib/utils';
 import Avatar from '../ui/Avatar';
 import Button from '../ui/Button';
+import BrandLogo from '../ui/BrandLogo';
 import type { Notification } from '../../lib/types';
 
 export default function Navbar() {
@@ -92,7 +93,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/80 backdrop-blur-xl dark:border-zinc-800/80 dark:bg-zinc-950/80">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-3 sm:gap-3 sm:px-6">
         <Link to="/" className="flex items-center gap-2.5 shrink-0">
-          <img src="/logo.svg" alt="" className="h-9 w-9 shrink-0" />
+          <BrandLogo className="h-9 w-9 shrink-0" />
           <span className="hidden text-lg font-semibold tracking-tight text-zinc-900 min-[380px]:inline dark:text-white">
             Tugas<span className="text-violet-600 dark:text-violet-400">Ku</span>
           </span>
