@@ -90,10 +90,10 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/80 backdrop-blur-xl dark:border-zinc-800/80 dark:bg-zinc-950/80">
-      <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
+      <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-3 sm:gap-3 sm:px-6">
         <Link to="/" className="flex items-center gap-2.5 shrink-0">
           <img src="/logo.svg" alt="" className="h-9 w-9 shrink-0" />
-          <span className="text-lg font-semibold tracking-tight text-zinc-900 dark:text-white">
+          <span className="hidden text-lg font-semibold tracking-tight text-zinc-900 min-[380px]:inline dark:text-white">
             Tugas<span className="text-violet-600 dark:text-violet-400">Ku</span>
           </span>
         </Link>
@@ -122,10 +122,10 @@ export default function Navbar() {
           )}
         </nav>
 
-        <div className="ml-auto flex items-center gap-1.5 md:ml-3">
+        <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-1.5 md:ml-3">
           <button
             onClick={toggleTheme}
-            className="rounded-xl p-2 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            className="hidden rounded-xl p-2 text-zinc-500 hover:bg-zinc-100 sm:inline-flex dark:hover:bg-zinc-800"
             aria-label="Toggle theme"
           >
             {theme === 'dark' ? <Sun className="h-4.5 w-4.5" /> : <Moon className="h-4.5 w-4.5" />}
@@ -145,7 +145,7 @@ export default function Navbar() {
               <div className="relative" ref={notifRef}>
                 <button
                   onClick={openNotifs}
-                  className="relative rounded-xl p-2 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  className="relative rounded-xl p-1.5 text-zinc-500 hover:bg-zinc-100 sm:p-2 dark:hover:bg-zinc-800"
                   aria-label="Notifikasi"
                 >
                   <Bell className="h-4.5 w-4.5" />
@@ -195,7 +195,8 @@ export default function Navbar() {
                     setMenuOpen((v) => !v);
                     setNotifOpen(false);
                   }}
-                  className="rounded-full"
+                  className="shrink-0 rounded-full"
+                  aria-label="Buka profil"
                 >
                   <Avatar src={profile.avatar_url} name={profile.nickname} size="sm" />
                 </button>
@@ -258,7 +259,7 @@ export default function Navbar() {
           )}
 
           <button
-            className="rounded-xl p-2 text-zinc-500 hover:bg-zinc-100 md:hidden dark:hover:bg-zinc-800"
+            className="shrink-0 rounded-xl p-1.5 text-zinc-500 hover:bg-zinc-100 sm:p-2 md:hidden dark:hover:bg-zinc-800"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Menu"
           >

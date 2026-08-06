@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../lib/api';
 import type { Feedback, Profile } from '../lib/types';
 import Avatar from '../components/ui/Avatar';
 import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
-import EmptyState from '../components/ui/EmptyState';
 import { FeedSkeleton } from '../components/ui/Skeleton';
 import ToastStack from '../components/ui/Toast';
 import { useToast } from '../hooks/useToast';
 import { formatDate } from '../lib/utils';
 
 export default function AdminPage() {
-  const { token, profile, loading, requireAuth } = useAuth();
+  const { token, profile, loading } = useAuth();
+  const navigate = useNavigate();
   const { toasts, push } = useToast();
   const [users, setUsers] = useState<Profile[]>([]);
   const [feedback, setFeedback] = useState<Feedback[]>([]);
@@ -34,28 +35,16 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (loading) return;
-    if (!requireAuth()) {
-      setBusy(false);
-      return;
-    }
-    if (profile?.role !== 'owner') {
-      setBusy(false);
+    // Admin must never be reachable by an unauthenticated or non-owner user.
+    if (!token || !profile || profile.role !== 'owner') {
+      navigate('/', { replace: true });
       return;
     }
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token, loading, profile?.role]);
+  }, [token, loading, profile?.role, navigate]);
 
-  if (!loading && profile && profile.role !== 'owner') {
-    return (
-      <EmptyState
-        title="Akses terbatas"
-        description="Halaman ini hanya untuk owner."
-      />
-    );
-  }
-
-  if (busy) return <FeedSkeleton />;
+  if (loading || !token || !profile || profile.role !== 'owner' || busy) return <FeedSkeleton />;
 
   return (
     <div className="space-y-6">
