@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import LoginModal from '../auth/LoginModal';
+import FeedbackButton from './FeedbackButton';
 
 export default function Layout() {
   return (
@@ -16,6 +17,7 @@ export default function Layout() {
       </main>
       <Footer />
       <LoginModal />
+      <FeedbackButton />
     </div>
   );
 }

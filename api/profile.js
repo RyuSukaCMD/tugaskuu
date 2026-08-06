@@ -4,6 +4,7 @@ import {
   cors,
   getAuthUser,
   requireUser,
+  requireOwner,
   sanitizeText,
   rateLimit,
   usernameFromEmail,
@@ -15,6 +16,36 @@ export default async function handler(req, res) {
   cors(res);
 
   try {
+    if (req.query.resource === 'feedback' && req.method === 'GET') {
+      const auth = await requireOwner(req, res);
+      if (!auth) return;
+      const { data, error } = await supabase
+        .from('feedback')
+        .select('id, user_id, category, message, created_at, user:profiles!feedback_user_id_fkey(nickname, username, email)')
+        .order('created_at', { ascending: false })
+        .limit(200);
+      if (error) throw error;
+      return res.status(200).json(data || []);
+    }
+
+    if (req.query.resource === 'feedback' && req.method === 'POST') {
+      const auth = await requireUser(req, res);
+      if (!auth) return;
+      if (!rateLimit(`feedback:${auth.user.id}`, 8, 3600000)) {
+        return res.status(429).json({ error: 'Terlalu banyak masukan. Coba lagi nanti.' });
+      }
+      const category = ['bug', 'idea', 'other'].includes(req.body?.category) ? req.body.category : 'other';
+      const message = sanitizeText(req.body?.message || '').slice(0, 1200);
+      if (message.length < 10) return res.status(400).json({ error: 'Masukan minimal 10 karakter' });
+      const { data, error } = await supabase
+        .from('feedback')
+        .insert({ user_id: auth.user.id, category, message })
+        .select()
+        .single();
+      if (error) throw error;
+      return res.status(201).json(data);
+    }
+
     if (req.method === 'GET') {
       const { id, username } = req.query;
       let query = supabase.from('profiles').select('*');

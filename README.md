@@ -75,6 +75,7 @@ Tabel yang dipakai:
 - `votes`
 - `bookmarks`
 - `notifications`
+- `feedback` (jalankan `supabase/feedback.sql` sekali melalui Supabase SQL Editor)
 
 ### Storage upload
 

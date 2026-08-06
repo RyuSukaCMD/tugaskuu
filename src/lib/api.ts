@@ -1,6 +1,7 @@
 import { authHeaders } from './utils';
 import type {
   Comment,
+  Feedback,
   Notification,
   Post,
   Profile,
@@ -40,6 +41,16 @@ export const api = {
     }).then((r) => handle<Profile>(r)),
 
   getSubjects: () => fetch('/api/posts?resource=subjects').then((r) => handle<Subject[]>(r)),
+
+  createFeedback: (token: string, body: { category: Feedback['category']; message: string }) =>
+    fetch('/api/profile?resource=feedback', {
+      method: 'POST',
+      headers: authHeaders(token),
+      body: JSON.stringify(body),
+    }).then((r) => handle<Feedback>(r)),
+
+  getFeedback: (token: string) =>
+    fetch('/api/profile?resource=feedback', { headers: authHeaders(token) }).then((r) => handle<Feedback[]>(r)),
 
   getFeed: (params: Record<string, string | number | undefined>, token?: string | null) => {
     const q = new URLSearchParams();

@@ -93,6 +93,15 @@ export interface Notification {
   actor?: Profile | null;
 }
 
+export interface Feedback {
+  id: number;
+  user_id: string;
+  category: 'bug' | 'idea' | 'other';
+  message: string;
+  created_at: string;
+  user?: Pick<Profile, 'nickname' | 'username' | 'email'>;
+}
+
 export interface ProfileStats {
   posts: number;
   questions: number;

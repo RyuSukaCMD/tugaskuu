@@ -3,7 +3,6 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import {
   Bell,
   Bookmark,
-  BookOpen,
   LogOut,
   Menu,
   Moon,
@@ -93,9 +92,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/80 backdrop-blur-xl dark:border-zinc-800/80 dark:bg-zinc-950/80">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
         <Link to="/" className="flex items-center gap-2.5 shrink-0">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-blue-600 text-white shadow-sm shadow-violet-500/20">
-            <BookOpen className="h-4.5 w-4.5" />
-          </div>
+          <img src="/logo.svg" alt="" className="h-9 w-9 shrink-0" />
           <span className="text-lg font-semibold tracking-tight text-zinc-900 dark:text-white">
             Tugas<span className="text-violet-600 dark:text-violet-400">Ku</span>
           </span>
