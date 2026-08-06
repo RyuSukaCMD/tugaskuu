@@ -94,7 +94,6 @@ export default function HomePage() {
   return (
     <div className="space-y-8">
       <section className="relative overflow-hidden rounded-3xl border border-zinc-200/80 bg-white px-6 py-10 dark:border-zinc-800 dark:bg-zinc-900/60 sm:px-10">
-        <div className="hero-gradient absolute inset-0 opacity-70" />
         <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-violet-500/10 blur-2xl" />
         <div className="absolute -bottom-16 left-20 h-40 w-40 rounded-full bg-blue-500/10 blur-2xl" />
         <div className="relative max-w-2xl">
