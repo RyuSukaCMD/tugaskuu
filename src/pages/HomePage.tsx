@@ -120,12 +120,12 @@ export default function HomePage() {
       <div className="flex flex-col gap-6 lg:flex-row">
         <aside className="w-full shrink-0 lg:w-64">
           <div className="sticky top-24 space-y-2 rounded-2xl border border-zinc-200/80 bg-white p-3 lg:space-y-4 lg:p-4 dark:border-zinc-800 dark:bg-zinc-900/60">
-            <div className="relative flex items-center justify-center lg:block">
+            <div className="flex translate-y-1 items-center justify-between lg:translate-y-0 lg:block">
               <h2 className="flex items-center gap-2 text-sm font-semibold">
                 <Filter className="h-4 w-4 text-violet-600" /> Filter
               </h2>
               <button
-                className="absolute right-0 text-xs text-violet-600 lg:hidden"
+                className="text-xs text-violet-600 lg:hidden"
                 onClick={() => setFiltersOpen((v) => !v)}
               >
                 {filtersOpen ? 'Tutup' : 'Buka'}
