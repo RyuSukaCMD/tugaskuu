@@ -1,5 +1,5 @@
 import supabase from './db-client.js';
-import { handleOptions, cors, getAuthUser, enrichPosts } from './_helpers.js';
+import { handleOptions, cors, getAuthUser, enrichPosts } from '../server/helpers.js';
 
 export default async function handler(req, res) {
   if (handleOptions(req, res)) return;

@@ -9,7 +9,7 @@ import {
   attachAuthors,
   createNotification,
   notifyMentions,
-} from './_helpers.js';
+} from '../server/helpers.js';
 
 function nestComments(flat) {
   const map = new Map();

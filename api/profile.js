@@ -8,7 +8,7 @@ import {
   rateLimit,
   usernameFromEmail,
   enrichPosts,
-} from './_helpers.js';
+} from '../server/helpers.js';
 
 export default async function handler(req, res) {
   if (handleOptions(req, res)) return;
