@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Filter, Sparkles } from 'lucide-react';
 import { api } from '../lib/api';
 import { useAuth } from '../contexts/AuthContext';
@@ -19,7 +19,8 @@ import EmptyState from '../components/ui/EmptyState';
 import Button from '../components/ui/Button';
 
 export default function HomePage() {
-  const { token } = useAuth();
+  const { token, requireAuth } = useAuth();
+  const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
   const sort = params.get('sort') || 'latest';
   const type = params.get('type') || 'all';
@@ -35,6 +36,10 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
+
+  const openCreate = (postType: 'question' | 'answer' = 'question') => {
+    requireAuth(() => navigate(`/create?type=${postType}`));
+  };
 
   const setFilter = (key: string, value: string) => {
     const next = new URLSearchParams(params);
@@ -104,12 +109,10 @@ export default function HomePage() {
             dengan dukungan Markdown dan LaTeX.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
-            <Link to="/create?type=question">
-              <Button>Tanya soal</Button>
-            </Link>
-            <Link to="/create?type=answer">
-              <Button variant="outline">Bagikan jawaban</Button>
-            </Link>
+            <Button onClick={() => openCreate('question')}>Tanya soal</Button>
+            <Button variant="outline" onClick={() => openCreate('answer')}>
+              Bagikan jawaban
+            </Button>
           </div>
         </div>
       </section>
@@ -238,11 +241,7 @@ export default function HomePage() {
             <EmptyState
               title="Belum ada postingan"
               description="Coba ubah filter atau buat postingan pertama."
-              action={
-                <Link to="/create">
-                  <Button>Buat postingan</Button>
-                </Link>
-              }
+              action={<Button onClick={() => openCreate()}>Buat postingan</Button>}
             />
           ) : (
             <>

@@ -8,7 +8,7 @@ export default function ToastStack({
   toasts: ToastItem[];
 }) {
   return (
-    <div className="fixed bottom-4 right-4 z-[80] flex flex-col gap-2">
+    <div className="fixed inset-x-4 bottom-4 z-[80] flex items-end gap-2 sm:left-auto sm:w-auto">
       <AnimatePresence>
         {toasts.map((t) => (
           <motion.div
@@ -17,7 +17,7 @@ export default function ToastStack({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8 }}
             className={cn(
-              'min-w-[220px] rounded-xl border px-4 py-3 text-sm shadow-lg backdrop-blur',
+              'w-full max-w-sm rounded-xl border px-4 py-3 text-sm shadow-lg backdrop-blur sm:min-w-[220px]',
               'bg-white/95 border-zinc-200 text-zinc-800',
               'dark:bg-zinc-900/95 dark:border-zinc-700 dark:text-zinc-100',
               t.type === 'error' && 'border-rose-300 text-rose-700 dark:border-rose-800 dark:text-rose-300',

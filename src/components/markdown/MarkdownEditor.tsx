@@ -18,7 +18,7 @@ export default function MarkdownEditor({
 
   return (
     <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900">
-      <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 px-2">
+      <div className="flex min-w-0 items-center justify-between border-b border-zinc-200 px-2 dark:border-zinc-800">
         <div className="flex">
           <button
             type="button"
@@ -45,7 +45,7 @@ export default function MarkdownEditor({
             <Eye className="h-3.5 w-3.5" /> Pratinjau
           </button>
         </div>
-        <span className="pr-2 text-[11px] text-zinc-400">Markdown · LaTeX $...$</span>
+        <span className="hidden shrink-0 pr-2 text-[11px] text-zinc-400 sm:inline">Markdown · LaTeX $...$</span>
       </div>
       {tab === 'write' ? (
         <textarea

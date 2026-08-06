@@ -16,7 +16,7 @@ export default function PostCard({ post }: { post: Post }) {
     post.content.length > 180 ? `${post.content.slice(0, 180).trim()}…` : post.content;
 
   return (
-    <article className="group rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm transition hover:border-violet-200 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900/70 dark:hover:border-violet-900">
+    <article className="group rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-violet-200 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900/70 dark:hover:border-violet-900">
       <div className="mb-3 flex items-start justify-between gap-3">
         <Link to={`/u/${post.author?.username || ''}`} className="flex items-center gap-2.5 min-w-0">
           <Avatar src={post.author?.avatar_url} name={post.author?.nickname} size="sm" />
@@ -50,13 +50,13 @@ export default function PostCard({ post }: { post: Post }) {
 
       {post.images?.length > 0 && (
         <Link to={`/post/${post.slug}`} className="mt-3 block">
-          <div className={cn('grid gap-2', post.images.length > 1 ? 'grid-cols-2' : 'grid-cols-1')}>
+          <div className={cn('grid overflow-hidden rounded-xl gap-2', post.images.length > 1 ? 'grid-cols-2' : 'grid-cols-1')}>
             {post.images.slice(0, 2).map((img) => (
               <img
                 key={img}
                 src={img}
                 alt=""
-                className="h-36 w-full rounded-xl object-cover"
+                className="h-36 w-full rounded-xl object-cover transition duration-300 group-hover:scale-[1.01]"
                 loading="lazy"
               />
             ))}

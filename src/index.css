@@ -11,6 +11,12 @@
     scroll-behavior: smooth;
   }
 
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
   body {
     @apply bg-[#fafafa] text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
     font-family: var(--font-sans);
@@ -19,6 +25,7 @@
 
   #root {
     min-height: 100vh;
+    overflow-x: clip;
   }
 
   ::selection {
