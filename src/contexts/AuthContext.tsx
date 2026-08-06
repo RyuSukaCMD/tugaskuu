@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -34,6 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [loginOpen, setLoginOpen] = useState(false);
+  const pendingAuthAction = useRef<(() => void) | null>(null);
 
   const syncProfile = useCallback(async (sess: Session | null) => {
     if (!sess?.user || !sess.access_token) {
@@ -65,7 +67,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(s);
       setUser(s?.user ?? null);
       syncProfile(s).finally(() => setLoading(false));
-      if (s) setLoginOpen(false);
+      if (s) {
+        setLoginOpen(false);
+        const action = pendingAuthAction.current;
+        pendingAuthAction.current = null;
+        action?.();
+      }
     });
 
     return () => {
@@ -95,6 +102,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         action?.();
         return true;
       }
+      pendingAuthAction.current = action ?? null;
       setLoginOpen(true);
       return false;
     },
