@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[#fafafa] text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
+    font-family: var(--font-sans);
+    margin: 0;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  ::selection {
+    @apply bg-violet-200 text-violet-950 dark:bg-violet-800 dark:text-violet-50;
+  }
+}
+
+@layer components {
+  .field-input {
+    @apply w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm text-zinc-800 outline-none transition;
+    @apply placeholder:text-zinc-400 focus:border-violet-400 focus:bg-white focus:ring-2 focus:ring-violet-500/15;
+    @apply dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:focus:border-violet-500 dark:focus:bg-zinc-950;
+  }
+}
+
+/* KaTeX tweaks in dark mode */
+.dark .katex {
+  color: inherit;
+}
+
+/* Markdown prose helpers without @tailwindcss/typography */
+.prose {
+  line-height: 1.7;
+  font-size: 0.95rem;
+  color: inherit;
+}
+.prose p {
+  margin: 0.75em 0;
+}
+.prose h1,
+.prose h2,
+.prose h3 {
+  font-weight: 600;
+  margin: 1.2em 0 0.5em;
+  line-height: 1.3;
+}
+.prose h1 { font-size: 1.5rem; }
+.prose h2 { font-size: 1.25rem; }
+.prose h3 { font-size: 1.1rem; }
+.prose ul,
+.prose ol {
+  margin: 0.75em 0;
+  padding-left: 1.25rem;
+}
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
+.prose li { margin: 0.25em 0; }
+.prose a {
+  color: #7c3aed;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.dark .prose a { color: #a78bfa; }
+.prose code {
+  font-size: 0.875em;
+  background: rgba(124, 58, 237, 0.08);
+  padding: 0.15em 0.35em;
+  border-radius: 0.35rem;
+}
+.prose pre {
+  overflow-x: auto;
+  border-radius: 0.9rem;
+  padding: 1rem;
+  background: #09090b;
+  color: #f4f4f5;
+  margin: 1em 0;
+}
+.prose pre code {
+  background: transparent;
+  padding: 0;
+}
+.prose blockquote {
+  border-left: 3px solid #c4b5fd;
+  padding-left: 1rem;
+  margin: 1em 0;
+  color: #71717a;
+}
+.prose img {
+  border-radius: 0.9rem;
+  max-width: 100%;
+}
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 0.9em;
+}
+.prose th,
+.prose td {
+  border: 1px solid #e4e4e7;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.dark .prose th,
+.dark .prose td {
+  border-color: #3f3f46;
+}
