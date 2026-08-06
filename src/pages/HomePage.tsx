@@ -94,6 +94,7 @@ export default function HomePage() {
   return (
     <div className="space-y-8">
       <section className="relative overflow-hidden rounded-3xl border border-zinc-200/80 bg-white px-6 py-10 dark:border-zinc-800 dark:bg-zinc-900/60 sm:px-10">
+        <div className="hero-gradient absolute inset-0 opacity-70" />
         <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-violet-500/10 blur-2xl" />
         <div className="absolute -bottom-16 left-20 h-40 w-40 rounded-full bg-blue-500/10 blur-2xl" />
         <div className="relative max-w-2xl">
@@ -132,7 +133,10 @@ export default function HomePage() {
               </button>
             </div>
 
-            <div className={cn('space-y-4', !filtersOpen && 'hidden lg:block', filtersOpen && 'max-h-[52dvh] overflow-y-auto pr-1 lg:max-h-none lg:overflow-visible lg:pr-0')}>
+            <div className={cn(
+              'space-y-4 overflow-hidden transition-all duration-300 ease-out lg:max-h-none lg:translate-y-0 lg:opacity-100 lg:overflow-visible lg:pr-0',
+              filtersOpen ? 'mt-4 max-h-[52dvh] translate-y-0 overflow-y-auto pr-1 opacity-100' : 'max-h-0 -translate-y-1 opacity-0 pointer-events-none'
+            )}>
               <FilterGroup label="Jenis">
                 {POST_TYPES.map((t) => (
                   <Chip

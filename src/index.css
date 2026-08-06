@@ -6,6 +6,19 @@
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
+
+@keyframes hero-gradient-drift {
+  0%, 100% { transform: translate3d(-4%, -3%, 0) scale(1); }
+  50% { transform: translate3d(4%, 3%, 0) scale(1.08); }
+}
+
+.hero-gradient {
+  background: radial-gradient(circle at 12% 20%, rgba(139, 92, 246, .20), transparent 36%), radial-gradient(circle at 84% 78%, rgba(59, 130, 246, .20), transparent 38%);
+  animation: hero-gradient-drift 9s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) { .hero-gradient { animation: none; } }
+
 @layer base {
   html {
     scroll-behavior: smooth;
