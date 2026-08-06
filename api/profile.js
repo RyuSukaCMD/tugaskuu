@@ -139,6 +139,7 @@ export default async function handler(req, res) {
         .from('posts')
         .select('*')
         .eq('user_id', profile.id)
+        .eq('is_removed', false)
         .order('created_at', { ascending: false })
         .limit(50);
 
