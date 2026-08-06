@@ -67,6 +67,33 @@ export default async function handler(req, res) {
       return res.status(201).json(data);
     }
 
+    if (req.query.resource === 'user-reports' && req.method === 'GET') {
+      const auth = await requireOwner(req, res);
+      if (!auth) return;
+      const { data, error } = await supabase.from('user_reports').select('*').order('created_at', { ascending: false }).limit(200);
+      if (error) throw error;
+      const ids = [...new Set((data || []).flatMap((r) => [r.user_id, r.reported_user_id]))];
+      const { data: profiles } = ids.length ? await supabase.from('profiles').select('id, nickname, username').in('id', ids) : { data: [] };
+      const map = new Map((profiles || []).map((p) => [p.id, p]));
+      return res.status(200).json((data || []).map((r) => ({ ...r, reporter: map.get(r.user_id), target: map.get(r.reported_user_id) })));
+    }
+
+    if (req.query.resource === 'user-report' && req.method === 'POST') {
+      const auth = await requireUser(req, res);
+      if (!auth) return;
+      const targetId = String(req.body?.reported_user_id || '');
+      const reason = ['impersonation', 'harassment', 'spam', 'other'].includes(req.body?.reason) ? req.body.reason : 'other';
+      const details = sanitizeText(req.body?.details || '').slice(0, 1000) || null;
+      if (!targetId || targetId === auth.user.id) return res.status(400).json({ error: 'Laporan pengguna tidak valid' });
+      if (!rateLimit(`user-report:${auth.user.id}`, 8, 3600000)) return res.status(429).json({ error: 'Terlalu banyak laporan. Coba lagi nanti.' });
+      const { data: target } = await supabase.from('profiles').select('id').eq('id', targetId).maybeSingle();
+      if (!target) return res.status(404).json({ error: 'Pengguna tidak ditemukan' });
+      const { data, error } = await supabase.from('user_reports').insert({ reported_user_id: targetId, user_id: auth.user.id, reason, details }).select().single();
+      if (error?.code === '23505') return res.status(400).json({ error: 'Kamu sudah melaporkan pengguna ini' });
+      if (error) throw error;
+      return res.status(201).json(data);
+    }
+
     if (req.query.resource === 'feedback' && req.method === 'GET') {
       const auth = await requireOwner(req, res);
       if (!auth) return;

@@ -106,6 +106,11 @@ export interface Report {
   reporter?: Pick<Profile, 'nickname' | 'username'>;
 }
 
+export interface UserReport {
+  id: number; reported_user_id: string; user_id: string; reason: string; details: string | null; status: 'open' | 'dismissed' | 'actioned'; created_at: string;
+  target?: Pick<Profile, 'nickname' | 'username'>; reporter?: Pick<Profile, 'nickname' | 'username'>;
+}
+
 export interface ModerationData {
   stats: { users: number; posts: number; reports: number; openReports: number; removedPosts: number };
   reports: Report[];

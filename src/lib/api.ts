@@ -6,6 +6,7 @@ import type {
   ModerationData,
   Post,
   Report,
+  UserReport,
   Profile,
   ProfileStats,
   QuestionAnswer,
@@ -56,6 +57,11 @@ export const api = {
 
   createReport: (token: string, body: { post_id: number; reason: Report['reason']; details?: string }) =>
     fetch('/api/profile?resource=report', { method: 'POST', headers: authHeaders(token), body: JSON.stringify(body) }).then((r) => handle<Report>(r)),
+
+  createUserReport: (token: string, body: { reported_user_id: string; reason: string; details?: string }) =>
+    fetch('/api/profile?resource=user-report', { method: 'POST', headers: authHeaders(token), body: JSON.stringify(body) }).then((r) => handle<{ id: number }>(r)),
+
+  getUserReports: (token: string) => fetch('/api/profile?resource=user-reports', { headers: authHeaders(token) }).then((r) => handle<UserReport[]>(r)),
 
   getModeration: (token: string) =>
     fetch('/api/profile?resource=moderation', { headers: authHeaders(token) }).then((r) => handle<ModerationData>(r)),

@@ -17,6 +17,7 @@ import Avatar from '../components/ui/Avatar';
 import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
 import PostCard from '../components/posts/PostCard';
+import ReportUserButton from '../components/posts/ReportUserButton';
 import { FeedSkeleton } from '../components/ui/Skeleton';
 import EmptyState from '../components/ui/EmptyState';
 
@@ -78,13 +79,9 @@ export default function ProfilePage() {
                 <p className="text-sm text-zinc-400">@{profile.username}</p>
               </div>
             </div>
-            {isMe && (
-              <Link to="/settings">
-                <Button variant="outline" size="sm">
-                  <Settings className="h-4 w-4" /> Edit profil
-                </Button>
-              </Link>
-            )}
+            {isMe ? (
+              <Link to="/settings"><Button variant="outline" size="sm"><Settings className="h-4 w-4" /> Edit profil</Button></Link>
+            ) : me ? <ReportUserButton userId={profile.id} /> : null}
           </div>
 
           {profile.bio && (
