@@ -14,7 +14,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (typeof window === 'undefined') return 'light';
     const saved = localStorage.getItem('tugasku-theme') as Theme | null;
     if (saved === 'light' || saved === 'dark') return saved;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // Start in light mode for a readable first visit; users can still toggle dark mode.
+    return 'light';
   });
 
   useEffect(() => {

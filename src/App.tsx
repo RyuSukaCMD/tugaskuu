@@ -11,9 +11,6 @@ import SettingsPage from './pages/SettingsPage';
 import BookmarksPage from './pages/BookmarksPage';
 import AdminPage from './pages/AdminPage';
 import NotFoundPage from './pages/NotFoundPage';
-import { handleGoogleRedirect } from './lib/googleAuth';
-
-handleGoogleRedirect();
 
 export default function App() {
   return (

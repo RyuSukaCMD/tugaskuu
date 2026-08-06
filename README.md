@@ -32,24 +32,34 @@ npm run dev
 
 ## Environment variables
 
-Salin nilai berikut ke `.env` (sudah disediakan di environment Design Arena):
+Salin `.env.example` menjadi `.env.local`, lalu isi nilainya. File `.env.local` tidak boleh di-commit.
+
+```bash
+cp .env.example .env.local
+```
+
+Variabel yang dibutuhkan hanya empat:
 
 ```env
-VITE_SUPABASE_URL=
-VITE_SUPABASE_ANON_KEY=
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
-VITE_GOOGLE_CLIENT_ID=
-VITE_GOOGLE_AUTH_PROXY=
+VITE_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY
+SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SUPABASE_SERVICE_ROLE_KEY
 ```
+
+- Ambil semuanya di **Supabase Dashboard → Project Settings → API**.
+- `VITE_SUPABASE_ANON_KEY` adalah publishable/anon key dan digunakan di browser.
+- `SUPABASE_SERVICE_ROLE_KEY` hanya untuk Vercel Serverless Functions. Jangan masukkan ke GitHub atau variabel berawalan `VITE_`.
+- Di Vercel, tambahkan keempat variabel tersebut lewat **Project → Settings → Environment Variables**, lalu redeploy.
 
 ### Google OAuth
 
-1. Buat OAuth Client ID di Google Cloud Console.
-2. Authorized redirect URI mengarah ke proxy Design Arena / callback yang dipakai app.
-3. Isi `VITE_GOOGLE_CLIENT_ID` dan `VITE_GOOGLE_AUTH_PROXY`.
-4. Pastikan provider Google diaktifkan di Supabase Auth.
+Login Google menggunakan OAuth bawaan Supabase; tidak ada environment variable Google atau proxy Design Arena.
+
+1. Di **Supabase Dashboard → Authentication → Providers → Google**, aktifkan Google dan isi Google Client ID serta Client Secret.
+2. Di **Supabase Dashboard → Authentication → URL Configuration**, isi Site URL dengan domain Vercel aplikasi dan tambahkan URL localhost/domain preview pada Redirect URLs.
+3. Di Google Cloud Console, tambahkan callback Supabase berikut ke **Authorized redirect URIs**:
+   `https://YOUR_PROJECT_REF.supabase.co/auth/v1/callback`.
 
 ### PostgreSQL (Supabase)
 

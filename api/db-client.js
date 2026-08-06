@@ -1,18 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
-import { triggerRestore } from './db-wake.js';
 
+// This module runs only in Vercel Serverless Functions. Never expose the
+// service-role key through a VITE_ or NEXT_PUBLIC_ variable.
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY,
-  {
-    global: {
-      fetch: async (url, options) => {
-        const res = await fetch(url, options);
-        if (!res.ok && res.status >= 500) triggerRestore();
-        return res;
-      },
-    },
-  }
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
 export default supabase;

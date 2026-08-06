@@ -25,7 +25,7 @@ export default function LoginModal() {
         <Button
           className="w-full"
           size="lg"
-          onClick={() => signInWithGoogle('TugasKu')}
+          onClick={() => void signInWithGoogle()}
         >
           <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden>
             <path
