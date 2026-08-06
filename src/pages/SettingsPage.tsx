@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../lib/api';
 import { SUBJECTS, EDUCATION_LEVELS, CLASS_OPTIONS, type EducationLevel } from '../lib/constants';
-import { fileToBase64 } from '../lib/utils';
+import { fileToBase64, resizeBanner } from '../lib/utils';
 import Avatar from '../components/ui/Avatar';
 import Button from '../components/ui/Button';
 import ToastStack from '../components/ui/Toast';
@@ -64,6 +64,19 @@ export default function SettingsPage() {
         : [...f.favorite_subjects, s].slice(0, 8);
       return { ...f, favorite_subjects };
     });
+  };
+
+  const uploadBanner = async (file?: File | null) => {
+    if (!file || !token) return;
+    if (!file.type.startsWith('image/')) return push('Pilih file gambar', 'error');
+    setUploading(true);
+    try {
+      const base64 = await resizeBanner(file);
+      const { url } = await api.uploadImage(token, `banner-${Date.now()}.jpg`, base64, 'image/jpeg');
+      setForm((f) => ({ ...f, banner_url: url }));
+      push('Banner diunggah dan disesuaikan otomatis', 'success');
+    } catch (e) { push(e instanceof Error ? e.message : 'Upload banner gagal', 'error'); }
+    finally { setUploading(false); }
   };
 
   const uploadAvatar = async (file?: File | null) => {
@@ -129,11 +142,12 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <label className="block space-y-1.5">
-          <span className="text-sm font-medium">URL banner profil</span>
-          <input className="field-input" type="url" value={form.banner_url} placeholder="https://..." onChange={(e) => setForm((f) => ({ ...f, banner_url: e.target.value }))} />
-          <span className="text-xs text-zinc-400">Gunakan URL gambar landscape untuk banner profil.</span>
-        </label>
+        <div className="space-y-2">
+          <span className="text-sm font-medium">Banner profil</span>
+          <div className="h-28 overflow-hidden rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 bg-cover bg-center" style={form.banner_url ? { backgroundImage: `url(${form.banner_url})` } : undefined} />
+          <label className="inline-flex cursor-pointer"><span className="rounded-xl border border-zinc-200 px-3 py-2 text-sm hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800">{uploading ? 'Memproses...' : 'Upload banner'}</span><input type="file" accept="image/*" className="hidden" disabled={uploading} onChange={(e) => uploadBanner(e.target.files?.[0])} /></label>
+          <span className="block text-xs text-zinc-400">Otomatis dipotong dan resize ke format banner landscape.</span>
+        </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="space-y-1.5">

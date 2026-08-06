@@ -41,6 +41,19 @@ export function parseTags(input: string): string[] {
     .slice(0, 10);
 }
 
+export async function resizeBanner(file: File, width = 1600, height = 500): Promise<string> {
+  const image = await createImageBitmap(file);
+  const scale = Math.max(width / image.width, height / image.height);
+  const drawWidth = image.width * scale;
+  const drawHeight = image.height * scale;
+  const canvas = document.createElement('canvas');
+  canvas.width = width; canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Browser tidak mendukung pemrosesan gambar');
+  ctx.drawImage(image, (width - drawWidth) / 2, (height - drawHeight) / 2, drawWidth, drawHeight);
+  return canvas.toDataURL('image/jpeg', 0.86).split(',')[1];
+}
+
 export async function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
