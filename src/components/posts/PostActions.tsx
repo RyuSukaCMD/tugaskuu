@@ -61,14 +61,14 @@ export default function PostActions({
       <ActionBtn
         active={!!post.liked}
         onClick={toggleLike}
-        icon={<Heart className={cn('h-4 w-4', post.liked && 'fill-current')} />}
+        icon={<Heart className={cn('h-4 w-4 transition-transform', post.liked && 'fill-current animate-like-pop')} />}
         label={String(post.like_count || 0)}
         activeClass="text-rose-600 bg-rose-50 dark:bg-rose-950/40"
       />
       <ActionBtn
         active={!!post.bookmarked}
         onClick={toggleBookmark}
-        icon={<Bookmark className={cn('h-4 w-4', post.bookmarked && 'fill-current')} />}
+        icon={<Bookmark className={cn('h-4 w-4 transition-transform', post.bookmarked && 'fill-current animate-like-pop')} />}
         label="Simpan"
         activeClass="text-violet-600 bg-violet-50 dark:bg-violet-950/40"
       />
@@ -103,7 +103,7 @@ function ActionBtn({
       onClick={onClick}
       className={cn(
         'inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-medium transition',
-        'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700',
+        'touch-manipulation bg-zinc-100 text-zinc-600 transition-all duration-150 hover:bg-zinc-200 active:scale-95 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700',
         active && activeClass
       )}
     >

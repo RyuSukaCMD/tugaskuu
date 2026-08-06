@@ -23,7 +23,7 @@ export default function Button({
       disabled={disabled || loading}
       className={cn(
         'inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/40',
+        'touch-manipulation select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/40 active:scale-[0.97]',
         'disabled:opacity-50 disabled:pointer-events-none',
         size === 'sm' && 'h-8 px-3 text-xs',
         size === 'md' && 'h-10 px-4 text-sm',

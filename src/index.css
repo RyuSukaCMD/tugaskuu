@@ -8,6 +8,9 @@
 
 
 
+@keyframes like-pop { 0% { transform: scale(1); } 45% { transform: scale(1.35); } 100% { transform: scale(1); } }
+.animate-like-pop { animation: like-pop .28s ease-out; }
+
 @layer base {
   html {
     scroll-behavior: smooth;
