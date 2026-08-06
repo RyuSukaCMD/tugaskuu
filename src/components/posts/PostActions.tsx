@@ -25,12 +25,17 @@ export default function PostActions({
   const toggleLike = () =>
     requireAuth(async () => {
       if (!token || busy) return;
+      const previous = { liked: !!post.liked, like_count: post.like_count || 0 };
+      const nextLiked = !previous.liked;
+      // Optimistic update: UI responds instantly, then synchronizes with the API.
+      onChange({ liked: nextLiked, like_count: Math.max(0, previous.like_count + (nextLiked ? 1 : -1)) });
       setBusy(true);
       try {
         const res = await api.togglePostLike(token, post.id);
         onChange({ liked: res.liked, like_count: res.count });
       } catch (e) {
-        onToast(e instanceof Error ? e.message : 'Gagal', 'error');
+        onChange(previous);
+        onToast(e instanceof Error ? e.message : 'Gagal memberi like', 'error');
       } finally {
         setBusy(false);
       }
@@ -39,12 +44,16 @@ export default function PostActions({
   const toggleBookmark = () =>
     requireAuth(async () => {
       if (!token || busy) return;
+      const previous = { bookmarked: !!post.bookmarked, bookmark_count: post.bookmark_count || 0 };
+      const nextBookmarked = !previous.bookmarked;
+      onChange({ bookmarked: nextBookmarked, bookmark_count: Math.max(0, previous.bookmark_count + (nextBookmarked ? 1 : -1)) });
       setBusy(true);
       try {
         const res = await api.toggleBookmark(token, post.id);
         onChange({ bookmarked: res.bookmarked, bookmark_count: res.count });
       } catch (e) {
-        onToast(e instanceof Error ? e.message : 'Gagal', 'error');
+        onChange(previous);
+        onToast(e instanceof Error ? e.message : 'Gagal menyimpan post', 'error');
       } finally {
         setBusy(false);
       }
