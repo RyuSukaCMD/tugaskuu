@@ -19,6 +19,13 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
+      // Kept here to stay within Vercel Hobby's 12-function limit.
+      if (req.query.resource === 'subjects') {
+        const { data, error } = await supabase.from('subjects').select('*').order('name', { ascending: true });
+        if (error) throw error;
+        return res.status(200).json(data || []);
+      }
+
       const {
         page = '1',
         limit = '12',

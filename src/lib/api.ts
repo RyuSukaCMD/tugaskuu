@@ -39,7 +39,7 @@ export const api = {
       body: JSON.stringify(body),
     }).then((r) => handle<Profile>(r)),
 
-  getSubjects: () => fetch('/api/subjects').then((r) => handle<Subject[]>(r)),
+  getSubjects: () => fetch('/api/posts?resource=subjects').then((r) => handle<Subject[]>(r)),
 
   getFeed: (params: Record<string, string | number | undefined>, token?: string | null) => {
     const q = new URLSearchParams();
